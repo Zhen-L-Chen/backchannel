@@ -31,7 +31,7 @@ export interface WallQuote {
 }
 
 /** Visual skin for an episode page. */
-export type ThemeName = "broadsheet" | "gloss";
+export type ThemeName = "broadsheet" | "gloss" | "terminal";
 
 export interface Episode {
   id: string;
@@ -160,6 +160,37 @@ const GLOSS_WALL: WallQuote[] = [
   },
 ];
 
+const MONEY_WALL: WallQuote[] = [
+  {
+    id: "m1",
+    text: "I did everything right. Degree, savings, no debt. The house still costs eleven of me.",
+    alias: "the recession-scarred saver",
+    camp: "a",
+    resonates: 96,
+  },
+  {
+    id: "m2",
+    text: "My rent went up 40% in three years. My latte budget is not the variable.",
+    alias: "the subletting realist",
+    camp: "a",
+    resonates: 84,
+  },
+  {
+    id: "m3",
+    text: "Nobody wants to hear it, but my $9 daily little treat is $3,300 a year.",
+    alias: "the compound optimizer",
+    camp: "b",
+    resonates: 58,
+  },
+  {
+    id: "m4",
+    text: "It was never about the latte. It’s about the mindset the latte represents.",
+    alias: "the bullish budgeter",
+    camp: "b",
+    resonates: 47,
+  },
+];
+
 /**
  * All live topics. EPISODES[0] is the front page; every entry also gets its
  * own page at /e/<slug>.
@@ -232,6 +263,44 @@ export const EPISODES: Episode[] = [
         "maximalist", "minimalist", "skeptic", "loyalist", "alchemist",
         "evangelist", "realist", "hoarder", "convert", "purist", "girlie",
         "theorist",
+      ],
+    },
+  },
+  {
+    id: "ep-007",
+    slug: "latte-factor",
+    number: 7,
+    theme: "terminal",
+    kicker: "the money desk hot take",
+    dateline: "The Money Desk · millennial edition",
+    volume: "Vol. III",
+    hook: "Skipping lattes won’t buy you a house.",
+    camps: {
+      a: { key: "a", name: "Blame the economy", color: "red", votes: 57, seatsTotal: 12, seatsClaimed: 8 },
+      b: { key: "b", name: "Blame the lattes", color: "blue", votes: 32, seatsTotal: 12, seatsClaimed: 4 },
+    },
+    closesAt: nextFriday18().toISOString(),
+    conversationUrl: "#claim",
+    status: "live",
+    wall: MONEY_WALL,
+    ticker: [
+      "$LATTE ▼ 4.50 · still not a house",
+      "$RENT ▲ +11.2% YoY",
+      "$AVOCADO holding steady",
+      "the room moved 9 pts since monday",
+      "market closes friday 6 p.m.",
+      "no surveys. only arguments.",
+      "89 positions open this week",
+    ],
+    aliasFlavor: {
+      adjectives: [
+        "leveraged", "diversified", "overdrafted", "frugal", "bearish",
+        "bullish", "401k-pilled", "house-poor", "subletting", "compound",
+        "recession-scarred", "cash-only",
+      ],
+      nouns: [
+        "skeptic", "optimizer", "daytrader", "tenant", "saver", "spender",
+        "auditor", "forecaster", "hustler", "budgeter", "realist", "landlord",
       ],
     },
   },

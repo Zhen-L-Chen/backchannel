@@ -9,8 +9,19 @@ import {
   makeAlias,
   type CampKey,
   type Episode,
+  type ThemeName,
   type WallQuote,
 } from "@/lib/club";
+
+/** Small copy variations per skin. */
+const THEME_COPY: Record<
+  ThemeName,
+  { filed: string; yourCamp: string; reserved: string; resonate: string }
+> = {
+  broadsheet: { filed: "ballot filed", yourCamp: "your camp", reserved: "reserved", resonate: "◉ resonates" },
+  gloss: { filed: "locked in ✦", yourCamp: "your camp", reserved: "reserved", resonate: "💅 felt that" },
+  terminal: { filed: "order filled", yourCamp: "your position", reserved: "position secured", resonate: "▲ cosign" },
+};
 
 /* ------------------------------------------------------------------ */
 /* persistence                                                         */
@@ -106,6 +117,7 @@ export default function ClubPage({ episode = CURRENT_EPISODE }: { episode?: Epis
   const ep = episode;
   const theme = ep.theme ?? "broadsheet";
   const isGloss = theme === "gloss";
+  const copy = THEME_COPY[theme];
 
   const [saved, setSaved] = useState<Saved>(EMPTY);
   const [hydrated, setHydrated] = useState(false);
@@ -306,7 +318,7 @@ export default function ClubPage({ episode = CURRENT_EPISODE }: { episode?: Epis
                       ? "the road not taken"
                       : `tap to side with ${counts[k]} others`}
                 </span>
-                {vote === k && <span className="camp__yours stamp stamp--in">your camp</span>}
+                {vote === k && <span className="camp__yours stamp stamp--in">{copy.yourCamp}</span>}
               </button>
             </span>
           ))}
@@ -316,9 +328,7 @@ export default function ClubPage({ episode = CURRENT_EPISODE }: { episode?: Epis
         {vote && (
           <section className="reveal" ref={revealRef} id="reveal">
             <div className="reveal__head">
-              <span className="stamp stamp--big stamp--in">
-                {isGloss ? "locked in ✦" : "ballot filed"}
-              </span>
+              <span className="stamp stamp--big stamp--in">{copy.filed}</span>
               <p className="reveal__verdict">
                 You stand with the {myPct}%.{" "}
                 {minority ? "The room disagrees, for now." : "The room leans your way, for now."}
@@ -418,7 +428,7 @@ export default function ClubPage({ episode = CURRENT_EPISODE }: { episode?: Epis
 
               {reserved ? (
                 <div className="ticket__reserved">
-                  <span className="stamp stamp--big stamp--in">reserved</span>
+                  <span className="stamp stamp--big stamp--in">{copy.reserved}</span>
                   <p>
                     Your invitation arrives <b>Tuesday, 9 a.m.</b> It carries a one-time door
                     token. Once you enter the booth, the ledger forgets it was ever yours.
@@ -487,7 +497,7 @@ export default function ClubPage({ episode = CURRENT_EPISODE }: { episode?: Epis
                     className={`resonate ${saved.resonated.includes(q.id) ? "resonate--on" : ""}`}
                     onClick={() => toggleResonate(q.id)}
                   >
-                    {isGloss ? "💅 felt that" : "◉ resonates"} · {q.resonates}
+                    {copy.resonate} · {q.resonates}
                   </button>
                 </div>
               </article>

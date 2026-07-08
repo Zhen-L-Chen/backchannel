@@ -2,12 +2,14 @@ import type { Metadata, Viewport } from "next";
 import {
   Anton,
   Baloo_2,
+  IBM_Plex_Mono,
   Lora,
   Playfair_Display,
   Shrikhand,
   Space_Grotesk,
   Special_Elite,
   UnifrakturMaguntia,
+  VT323,
 } from "next/font/google";
 import "./globals.css";
 
@@ -61,6 +63,18 @@ const grotesk = Space_Grotesk({
   subsets: ["latin"],
 });
 
+const crt = VT323({
+  variable: "--font-crt",
+  weight: "400",
+  subsets: ["latin"],
+});
+
+const plexMono = IBM_Plex_Mono({
+  variable: "--font-plex-mono",
+  weight: ["400", "600"],
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
   title: "The Backchannel: a conversational club",
   description:
@@ -79,7 +93,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${blackletter.variable} ${display.variable} ${editorial.variable} ${typewriter.variable} ${body.variable} ${gloss.variable} ${bubble.variable} ${grotesk.variable}`}
+      className={`${blackletter.variable} ${display.variable} ${editorial.variable} ${typewriter.variable} ${body.variable} ${gloss.variable} ${bubble.variable} ${grotesk.variable} ${crt.variable} ${plexMono.variable}`}
     >
       <body>{children}</body>
     </html>
