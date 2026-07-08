@@ -31,7 +31,7 @@ export interface WallQuote {
 }
 
 /** Visual skin for an episode page. */
-export type ThemeName = "broadsheet" | "gloss" | "terminal";
+export type ThemeName = "broadsheet" | "gloss" | "terminal" | "ledger";
 
 export interface Episode {
   id: string;
@@ -270,7 +270,7 @@ export const EPISODES: Episode[] = [
     id: "ep-007",
     slug: "latte-factor",
     number: 7,
-    theme: "terminal",
+    theme: "ledger",
     kicker: "the money desk hot take",
     dateline: "The Money Desk · millennial edition",
     volume: "Vol. III",
@@ -284,13 +284,13 @@ export const EPISODES: Episode[] = [
     status: "live",
     wall: MONEY_WALL,
     ticker: [
-      "$LATTE ▼ 4.50 · still not a house",
-      "$RENT ▲ +11.2% YoY",
-      "$AVOCADO holding steady",
+      "entry № 007: the latte question",
+      "debit: rent, +40% in 3 yrs",
+      "credit: one $9 little treat",
       "the room moved 9 pts since monday",
-      "market closes friday 6 p.m.",
+      "the ledger closes friday 6 p.m.",
       "no surveys. only arguments.",
-      "89 positions open this week",
+      "89 accounts open this week",
     ],
     aliasFlavor: {
       adjectives: [

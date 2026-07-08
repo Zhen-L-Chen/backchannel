@@ -21,6 +21,7 @@ const THEME_COPY: Record<
   broadsheet: { filed: "ballot filed", yourCamp: "your camp", reserved: "reserved", resonate: "◉ resonates" },
   gloss: { filed: "locked in ✦", yourCamp: "your camp", reserved: "reserved", resonate: "💅 felt that" },
   terminal: { filed: "order filled", yourCamp: "your position", reserved: "position secured", resonate: "▲ cosign" },
+  ledger: { filed: "duly recorded", yourCamp: "your account", reserved: "reserved in ink", resonate: "◉ seconded" },
 };
 
 /* ------------------------------------------------------------------ */
