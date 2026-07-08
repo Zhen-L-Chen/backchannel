@@ -8,6 +8,7 @@ import {
   WALL,
   makeAlias,
   type CampKey,
+  type Episode,
   type WallQuote,
 } from "@/lib/club";
 
@@ -101,8 +102,8 @@ function useCountdown(iso: string) {
 /* the page                                                            */
 /* ------------------------------------------------------------------ */
 
-export default function ClubPage() {
-  const ep = CURRENT_EPISODE;
+export default function ClubPage({ episode = CURRENT_EPISODE }: { episode?: Episode }) {
+  const ep = episode;
 
   const [saved, setSaved] = useState<Saved>(EMPTY);
   const [hydrated, setHydrated] = useState(false);
@@ -110,7 +111,7 @@ export default function ClubPage() {
     a: ep.camps.a.votes,
     b: ep.camps.b.votes,
   });
-  const [wall, setWall] = useState<WallQuote[]>(WALL);
+  const [wall, setWall] = useState<WallQuote[]>(ep.wall ?? WALL);
   const [takeDraft, setTakeDraft] = useState("");
   const [takeFiled, setTakeFiled] = useState(false);
   const [email, setEmail] = useState("");
@@ -235,7 +236,7 @@ export default function ClubPage() {
       <header className="masthead sheet">
         <div className="masthead__dateline">
           <span>Vol. I · No. {ep.number}</span>
-          <span>Season One · Week {ep.number} of 4</span>
+          <span>{ep.dateline ?? `Season One · Week ${ep.number} of 4`}</span>
           <span>Price: one opinion</span>
         </div>
         <h1 className="masthead__title misreg">The Backchannel</h1>
