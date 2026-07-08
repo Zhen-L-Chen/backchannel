@@ -208,7 +208,7 @@ export const EPISODES: Episode[] = [
     hook: "The 10-step skincare routine is a scam.",
     camps: {
       a: { key: "a", name: "It’s a ritual", color: "red", votes: 44, seatsTotal: 12, seatsClaimed: 7 },
-      b: { key: "b", name: "It’s a racket", color: "blue", votes: 41, seatsTotal: 12, seatsClaimed: 4 },
+      b: { key: "b", name: "It’s a rip-off", color: "blue", votes: 41, seatsTotal: 12, seatsClaimed: 4 },
     },
     closesAt: nextFriday18().toISOString(),
     conversationUrl: "#claim",
