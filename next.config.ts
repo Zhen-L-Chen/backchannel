@@ -6,6 +6,8 @@ const nextConfig: NextConfig = {
   images: { unoptimized: true },
   // Folder-style URLs (/e/<slug>/) so GitHub Pages serves them directly.
   trailingSlash: true,
+  // Set by the deploy workflow ("/backchannel" on GitHub Pages); empty locally.
+  basePath: process.env.PAGES_BASE_PATH ?? "",
 };
 
 export default nextConfig;

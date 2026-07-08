@@ -23,13 +23,11 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      - name: Configure Pages (injects basePath for project sites)
-        uses: actions/configure-pages@v5
-        with:
-          static_site_generator: next
-          enablement: true
+      - uses: actions/configure-pages@v5
       - run: npm ci
       - run: npm run build
+        env:
+          PAGES_BASE_PATH: /backchannel
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./out
