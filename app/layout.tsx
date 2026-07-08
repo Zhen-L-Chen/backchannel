@@ -1,8 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import {
   Anton,
+  Baloo_2,
   Lora,
   Playfair_Display,
+  Shrikhand,
+  Space_Grotesk,
   Special_Elite,
   UnifrakturMaguntia,
 } from "next/font/google";
@@ -40,6 +43,24 @@ const body = Lora({
   subsets: ["latin"],
 });
 
+const gloss = Shrikhand({
+  variable: "--font-gloss",
+  weight: "400",
+  subsets: ["latin"],
+});
+
+const bubble = Baloo_2({
+  variable: "--font-bubble",
+  weight: ["600", "700", "800"],
+  subsets: ["latin"],
+});
+
+const grotesk = Space_Grotesk({
+  variable: "--font-grotesk",
+  weight: ["400", "500", "700"],
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
   title: "The Backchannel: a conversational club",
   description:
@@ -58,7 +79,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${blackletter.variable} ${display.variable} ${editorial.variable} ${typewriter.variable} ${body.variable}`}
+      className={`${blackletter.variable} ${display.variable} ${editorial.variable} ${typewriter.variable} ${body.variable} ${gloss.variable} ${bubble.variable} ${grotesk.variable}`}
     >
       <body>{children}</body>
     </html>

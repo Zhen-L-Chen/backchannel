@@ -30,6 +30,9 @@ export interface WallQuote {
   yours?: boolean;
 }
 
+/** Visual skin for an episode page. */
+export type ThemeName = "broadsheet" | "gloss";
+
 export interface Episode {
   id: string;
   /** URL slug: the episode lives at /e/<slug> */
@@ -39,6 +42,10 @@ export interface Episode {
   kicker: string;
   /** Masthead dateline, e.g. "Season One · Week 3 of 4". */
   dateline?: string;
+  /** Masthead volume label; defaults to "Vol. I". */
+  volume?: string;
+  /** Which design skin to render. Defaults to "broadsheet". */
+  theme?: ThemeName;
   camps: Record<CampKey, Camp>;
   /** ISO date the ballot closes — drives the countdown. */
   closesAt: string;
@@ -49,6 +56,10 @@ export interface Episode {
   reveal?: { finalSplit: [number, number]; movedPts: number; movedToward: string };
   /** Seeded quote wall for this topic. */
   wall?: WallQuote[];
+  /** Topic-flavored ticker lines; falls back to TICKER_ITEMS. */
+  ticker?: string[];
+  /** Topic-flavored pseudonym generator lists. */
+  aliasFlavor?: { adjectives: string[]; nouns: string[] };
 }
 
 /** Next Friday 18:00 local — keeps the demo countdown alive forever. */
@@ -118,6 +129,37 @@ const AI_WALL: WallQuote[] = [
   },
 ];
 
+const GLOSS_WALL: WallQuote[] = [
+  {
+    id: "g1",
+    text: "The ritual isn’t the products. It’s ten minutes a day where nobody needs me.",
+    alias: "the buttery loyalist",
+    camp: "a",
+    resonates: 94,
+  },
+  {
+    id: "g2",
+    text: "Half these serums are moisturizer in a trench coat.",
+    alias: "the matte skeptic",
+    camp: "b",
+    resonates: 87,
+  },
+  {
+    id: "g3",
+    text: "You don’t need 12 steps. You need water, SPF, and to log off.",
+    alias: "the barefaced realist",
+    camp: "b",
+    resonates: 71,
+  },
+  {
+    id: "g4",
+    text: "My shelf is a shrine to the person I’m becoming. Mind your business.",
+    alias: "the glazed maximalist",
+    camp: "a",
+    resonates: 63,
+  },
+];
+
 /**
  * All live topics. EPISODES[0] is the front page; every entry also gets its
  * own page at /e/<slug>.
@@ -154,6 +196,44 @@ export const EPISODES: Episode[] = [
     conversationUrl: "#claim",
     status: "live",
     wall: AI_WALL,
+  },
+  {
+    id: "ep-006",
+    slug: "ten-step-scam",
+    number: 6,
+    theme: "gloss",
+    kicker: "the gloss desk hot take",
+    dateline: "The Gloss Desk · beauty week",
+    volume: "Vol. II",
+    hook: "The 10-step skincare routine is a scam.",
+    camps: {
+      a: { key: "a", name: "It’s a ritual", color: "red", votes: 44, seatsTotal: 12, seatsClaimed: 7 },
+      b: { key: "b", name: "It’s a racket", color: "blue", votes: 41, seatsTotal: 12, seatsClaimed: 4 },
+    },
+    closesAt: nextFriday18().toISOString(),
+    conversationUrl: "#claim",
+    status: "live",
+    wall: GLOSS_WALL,
+    ticker: [
+      "the gloss desk is open 💋",
+      "112 girlies have taken sides",
+      "“moisturizer in a trench coat” · overheard in the booths",
+      "the reveal drops friday",
+      "5 spots left in camp ritual",
+      "no surveys ✦ only arguments",
+    ],
+    aliasFlavor: {
+      adjectives: [
+        "dewy", "glazed", "matte", "buttery", "barefaced", "cherry-coded",
+        "overexfoliated", "fragrance-free", "double-cleansed", "spf-pilled",
+        "lit-from-within", "shelfie-proud",
+      ],
+      nouns: [
+        "maximalist", "minimalist", "skeptic", "loyalist", "alchemist",
+        "evangelist", "realist", "hoarder", "convert", "purist", "girlie",
+        "theorist",
+      ],
+    },
   },
 ];
 
@@ -225,9 +305,11 @@ export const NOUNS = [
   "skeptic", "believer", "insider", "understudy",
 ];
 
-export function makeAlias(): string {
-  const a = ADJECTIVES[Math.floor(Math.random() * ADJECTIVES.length)];
-  const n = NOUNS[Math.floor(Math.random() * NOUNS.length)];
+export function makeAlias(flavor?: { adjectives: string[]; nouns: string[] }): string {
+  const adjectives = flavor?.adjectives ?? ADJECTIVES;
+  const nouns = flavor?.nouns ?? NOUNS;
+  const a = adjectives[Math.floor(Math.random() * adjectives.length)];
+  const n = nouns[Math.floor(Math.random() * nouns.length)];
   return `the ${a} ${n}`;
 }
 

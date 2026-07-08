@@ -63,8 +63,8 @@ function Starburst() {
   );
 }
 
-function Ticker() {
-  const row = TICKER_ITEMS.map((t, i) => (
+function Ticker({ items }: { items: string[] }) {
+  const row = items.map((t, i) => (
     <span className="ticker__item" key={i}>
       {t}
     </span>
@@ -104,6 +104,8 @@ function useCountdown(iso: string) {
 
 export default function ClubPage({ episode = CURRENT_EPISODE }: { episode?: Episode }) {
   const ep = episode;
+  const theme = ep.theme ?? "broadsheet";
+  const isGloss = theme === "gloss";
 
   const [saved, setSaved] = useState<Saved>(EMPTY);
   const [hydrated, setHydrated] = useState(false);
@@ -174,7 +176,7 @@ export default function ClubPage({ episode = CURRENT_EPISODE }: { episode?: Epis
     if (vote) return;
     const next: Saved = {
       ...saved,
-      alias: saved.alias ?? makeAlias(),
+      alias: saved.alias ?? makeAlias(ep.aliasFlavor),
       votes: { ...saved.votes, [ep.id]: side },
     };
     persist(next);
@@ -228,14 +230,21 @@ export default function ClubPage({ episode = CURRENT_EPISODE }: { episode?: Epis
   const campWord = (k: CampKey) => ep.camps[k].name;
 
   return (
-    <>
+    <div className={`shell theme-${theme}`}>
       <div className="grain" aria-hidden="true" />
-      <Ticker />
+      {isGloss && (
+        <div className="blobs" aria-hidden="true">
+          <i />
+          <i />
+          <i />
+        </div>
+      )}
+      <Ticker items={ep.ticker ?? TICKER_ITEMS} />
 
       {/* ---------------- masthead ---------------- */}
       <header className="masthead sheet">
         <div className="masthead__dateline">
-          <span>Vol. I · No. {ep.number}</span>
+          <span>{ep.volume ?? "Vol. I"} · No. {ep.number}</span>
           <span>{ep.dateline ?? `Season One · Week ${ep.number} of 4`}</span>
           <span>Price: one opinion</span>
         </div>
@@ -260,6 +269,12 @@ export default function ClubPage({ episode = CURRENT_EPISODE }: { episode?: Epis
       <main className="sheet">
         {/* ---------------- the take ---------------- */}
         <section className="take" ref={ballotRef}>
+          {isGloss && (
+            <>
+              <span className="sticker sticker--tl">gloss edition 💋</span>
+              <span className="sticker sticker--br">3 seconds ✦ go</span>
+            </>
+          )}
           <div className="kicker">{ep.kicker}</div>
           <h2 className="take__hook misreg">“{ep.hook}”</h2>
           <p className="take__gut">
@@ -301,7 +316,9 @@ export default function ClubPage({ episode = CURRENT_EPISODE }: { episode?: Epis
         {vote && (
           <section className="reveal" ref={revealRef} id="reveal">
             <div className="reveal__head">
-              <span className="stamp stamp--big stamp--in">ballot filed</span>
+              <span className="stamp stamp--big stamp--in">
+                {isGloss ? "locked in ✦" : "ballot filed"}
+              </span>
               <p className="reveal__verdict">
                 You stand with the {myPct}%.{" "}
                 {minority ? "The room disagrees, for now." : "The room leans your way, for now."}
@@ -470,7 +487,7 @@ export default function ClubPage({ episode = CURRENT_EPISODE }: { episode?: Epis
                     className={`resonate ${saved.resonated.includes(q.id) ? "resonate--on" : ""}`}
                     onClick={() => toggleResonate(q.id)}
                   >
-                    ◉ resonates · {q.resonates}
+                    {isGloss ? "💅 felt that" : "◉ resonates"} · {q.resonates}
                   </button>
                 </div>
               </article>
@@ -583,6 +600,6 @@ export default function ClubPage({ episode = CURRENT_EPISODE }: { episode?: Epis
           </button>
         )}
       </div>
-    </>
+    </div>
   );
 }
